@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>继承的多种方式和优缺点</title>
+</head>
+
+<body>
+  <script>
+    //原型链继承
+    // function Parent(){
+    //   this.name="momota"
+    // }
+    // function Child(){}
+    // Child.prototype=new Parent()
+    // Child.prototype.constructor=Child;
+    // var child1=new Child()
+    // console.log(child1.name);
+
+    //构造函数继承
+    // function Parent(){
+    //   this.name='momota'
+    // }
+    // function Child(){
+    //   Parent.call(this);
+    // }
+    // var child1=new Child()
+    // console.log(child1.name);
+
+    //组合继承
+    // function Parent() {
+    //   this.name = 'momoa'
+    // }
+    // function Child() {
+    //   Parent.call(this);
+    // }
+    // Child.prototype = new Parent()
+    // Child.prototype.constructor = Child
+    // var child1 = new Child()
+    // console.log(child1);
+
+    //寄生组合式继承
+    function Parent() {
+      this.name = 'momota'
+    }
+    function Child() {
+      Parent.call(this)
+    }
+    Child.prototype = new Parent();
+    Child.prototype.constructor = Child;
+    var child1 = new Child()
+
+    function createObj(o) {
+      function Fn() { }
+      Fn.prototype = o;
+      return new Fn()
+    }
+    function prototype(Child, Parent) {
+      var prototype = createObj(Parent.prototype)
+    }
+  </script>
+</body>
+
+</html>

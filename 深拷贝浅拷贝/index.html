@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深拷贝浅拷贝</title>
+</head>
+
+<body>
+  <script>
+    //深拷贝
+    // function deepClone(obj) {
+    //   if (typeof obj != Object) {
+    //     return
+    //   }
+    //   var newObj = obj instanceof Array ? [] : {};
+    //   for (key in obj) {
+    //     if (obj.hasOwnProperty(key)) {
+    //       newObj[key] = typeof key == Object ? deepClone(obj[key]) : obj[key]
+    //     }
+    //     return newObj;
+    //   }
+    // }
+    // //extend简单的实现
+    // function extend(deep) {
+    //   var args = typeof deep == 'boolean' && deep ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
+    //   var i = 0;
+    //   var obj = {}
+    //   for (i; i < args.length; i++) {
+    //     if (!isObject(args[i])) {
+    //       return false
+    //     }
+    //     for (key in args[i]) {
+    //       if (deep && isObject(args[i][key] && obj[key])) {
+    //         obj[key] = extend(deep, obj[key], args[i][key])
+    //         continue
+    //       }
+    //       if (args[i].hasOwnProperty(key)) {
+    //         obj[key] = args[i][key]
+    //       }
+    //     }
+    //   }
+
+
+    //   function isObject(obj) {
+    //     return Object.prototype.toString.call(obj) === '[object Object]'
+    //   }
+    //   return obj
+
+    // }
+    function extend(deep) {
+      var args = typeof deep == 'boolean' && deep ? Array.prototype.slice.call(arguments, 1) : Array.prototype.slice.call(arguments);
+      var i = 0;
+      var obj = {};
+      for (; i < args.length; i++) {
+        // debugger
+        if (!isObject(args[i])) {
+          return false
+        }
+        for (key in args[i]) {
+          if (deep && isObject(args[i][key]) && obj[key]) {
+            obj[key] = extend(deep, obj[key], args[i][key])
+            continue
+          }
+          if (args[i].hasOwnProperty(key)) {
+            obj[key] = args[i][key]
+          }
+        }
+      }
+      function isObject(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]'
+      }
+      return obj;
+
+    }
+    var a={a:'a'}
+    var b={b:'b'}
+    var obj=extend(true,{},a,b)
+    console.log(obj);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bind的模拟实现</title>
+</head>
+
+<body>
+  <script>
+    Function.prototype.bind1 = function (context) {
+      var _this = this;
+      var contextArgs = Array.prototype.slice.call(arguments, 1)
+      var fNOP = function () { };
+      var bindFoo = function () {
+        var args = Array.prototype.slice.call(arguments)
+        return _this.apply((this instanceof bindFoo ? this : context), contextArgs.concat(args))
+      }
+      fNOP.prototype = this.prototype;
+      bindFoo.prototype = new fNOP();
+      return bindFoo;
+    }
+    var foo = {
+      value: 1
+    };
+
+    function bar(age, name) {
+      this.habit = 'shopping';
+      console.log(this.value);
+      console.log(name);
+      console.log(age);
+    }
+    bar.prototype.friend = 'kevin';
+
+    // 返回了一个函数
+    var bindFoos = bar.bind1(foo, 12);
+    console.log(bindFoos);
+    var obj = new bindFoos('momota'); // 1
+    console.log(obj);
+  </script>
+</body>
+
+</html>

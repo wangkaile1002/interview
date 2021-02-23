@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>call和apply的模拟实现</title>
+</head>
+
+<body>
+  <script>
+    //步骤一：实现简单的call1方法
+    //步骤二：给call1添加参数
+    //步骤三：给call1添加返回值
+    Function.prototype.call1 = function (context) {
+      context = context || window
+      var args = Array.from(arguments).slice(1)
+      context.fn = this;//this==bar
+      var result = context.fn(...args);
+      delete context.fn;
+      return result;
+    }
+    //测试
+    var value='window'
+    var foo = {
+      value: 1
+    }
+    function bar(name, age) {
+      console.log(name);
+      console.log(age);
+      console.log(this.value);
+      return {
+        value: this.value,
+        name: name,
+        age: age
+      }
+    }
+    // bar.call1(foo, 'momota', 23)
+     var res=bar.call1(null,'momota',23)
+     console.log(res)
+
+
+
+  </script>
+</body>
+
+</html>
