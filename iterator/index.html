@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>迭代器与 for of</title>
+</head>
+
+<body>
+  <script>
+    function createIterator(items) {
+      var i = 0;
+      return {
+        next: function () {
+          var done = i >= items.length;
+          var value = !done ? items[i++] : undefined;
+
+          return {
+            done: done,
+            value: value
+          };
+        }
+      };
+    }
+    const obj = {
+      value: 1
+    };
+
+    obj[Symbol.iterator] = function () {
+      return createIterator([1, 2, 3]);
+    };
+    console.log(obj);
+
+    for (value of obj) {
+      console.log(value);
+    }
+
+    function red() {
+      console.log('red');
+    }
+    function green() {
+      console.log('green');
+    }
+    function yellow() {
+      console.log('yellow');
+    }
+
+    // var light = function (timmer, cb) {
+    //   return new Promise(function (resolve, reject) {
+    //     setTimeout(function () {
+    //       cb();
+    //       resolve();
+    //     }, timmer);
+    //   });
+    // };
+
+    // var step = function () {
+    //   Promise.resolve().then(function () {
+    //     return light(3000, red);
+    //   }).then(function () {
+    //     return light(2000, green);
+    //   }).then(function () {
+    //     return light(1000, yellow);
+    //   }).then(function () {
+    //     step();
+    //   });
+    // }
+
+    // step();
+  </script>
+</body>
+
+</html>

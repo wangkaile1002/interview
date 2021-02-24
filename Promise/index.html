@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Promuse基本原理</title>
+  <style>
+    .p {
+      width: 200px;
+      height: 100px;
+      border: 1px solid red;
+      /* position: relative;
+      line-height: 20px;
+      max-height: 200px;
+      overflow: hidden; */
+    }
+
+    /* p::after {
+      content: "...";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding-left: 30px;
+      background: -webkit-linear-gradient(left, transparent, #fff 55%);
+      background: -o-linear-gradient(right, transparent, #fff 55%);
+      background: -moz-linear-gradient(right, transparent, #fff 55%);
+      background: linear-gradient(to right, transparent, #fff 55%);
+    } */
+  </style>
+</head>
+
+<body>
+  <p class="p">
+    Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理Promuse基本原理
+  </p>
+  <script>
+    const p = document.querySelector('p')
+    let words = p.innerHTML.split(/(?<=[\u4e00-\u9fa5])|(?<=\w*?\b)/g)
+    while (p.scrollHeight > p.clientHeight) {
+      words.pop()
+      p.innerHTML = words.join('') + '...'
+    }
+    Promise.resolve('wang').then(result => {
+      console.log(result);
+    })
+    Promise.selfAll = function (arr) {
+      return new Promise((resolve, reject) => {
+        let Promises = Array.from(arr);
+        if (Promises.length == 0) {
+          resolve([])
+        } else {
+          let result = [];
+          let index = 0;
+          for (let i = 0; i < Promises.length; i++) {
+            Promise.resolve(Promises[i]).then(res => {
+              result[i] = res;
+              if (++index == Promises.length) {
+                resolve(result)
+              }
+            }, err => {
+              reject(err);
+              return;
+            })
+          }
+        }
+      })
+    }
+    let p1 = new Promise(function (resolve, reject) {
+      reject(42);
+    })
+    let p2 = new Promise(function (resolve, reject) {
+      resolve(43);
+    })
+    let p3 = new Promise(function (resolve, reject) {
+      reject(44);
+    })
+    Promise.selfAll([p1, p2, p3]).then(res => {
+      console.log('success', res);
+    }).catch(err => {
+      console.log('error', err);
+    })
+  </script>
+</body>
+
+</html>
